@@ -10,9 +10,11 @@ use App\Events\Teardown;
 
 class ApiController extends Controller
 {
-    protected $queue;
-
     protected $documents;
+
+    protected $workers;
+
+    protected $queue;
 
     public function __construct(Documents $documents, Workers $workers, GeneratorQueue $queue)
     {
