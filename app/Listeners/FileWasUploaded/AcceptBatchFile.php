@@ -7,6 +7,8 @@ use App\Repositories\Batches;
 
 class AcceptBatchFile
 {
+    protected $batches;
+
     public function __construct(Batches $batches)
     {
         $this->batches = $batches;
