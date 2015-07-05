@@ -1,0 +1,20 @@
+.box {
+	text-align:center;
+}
+
+.headline-number {
+	font-size: 5em;
+	display: block;
+}
+
+#global-actions {
+	text-align:center;
+}
+
+.dropzone {
+	padding: 0;
+}
+
+.dropzone .dz-message {
+	margin: 3em 1em;
+}
