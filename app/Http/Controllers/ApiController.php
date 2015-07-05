@@ -16,6 +16,8 @@ class ApiController extends Controller
 
     protected $queue;
 
+    protected $documents;
+
     public function __construct(Documents $documents)
     {
         $this->server = new Server(
