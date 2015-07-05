@@ -2,18 +2,15 @@
 
 namespace App\Listeners\Teardown;
 
-use Kuroi\Cluster\Servers\Server;
-use Kuroi\Cluster\Servers\Adapters\DigitalOcean;
+use App\Services\Workers;
 
 class PowerDownServers
 {
-    protected $server;
+    protected $workers;
 
-    public function __construct()
+    public function __construct(Workers $workers)
     {
-        $this->server = new Server(
-            new DigitalOcean(['token' => env('DIGITALOCEAN_PERSONAL_ACCESS_TOKEN')])
-        );
+        $this->workers = $worker;
     }
 
     /**
@@ -23,10 +20,6 @@ class PowerDownServers
      */
     public function handle()
     {
-        foreach ($this->server->read()->droplets as $droplet) {
-            if ('worker' == $droplet->name) {
-                $this->server->delete($droplet->id);
-            }
-        }
+        $this->workers->deleteAll();
     }
 }

@@ -2,18 +2,15 @@
 
 namespace App\Listeners\Teardown;
 
-use Kuroi\Cluster\Queues\Queue;
-use Kuroi\Cluster\Queues\Adapters\IronMQ;
+use App\Services\GeneratorQueue;
 
 class ClearQueues
 {
     protected $queue;
 
-    public function __construct()
+    public function __construct(GeneratorQueue $queue)
     {
-        $this->queue = new Queue(
-            new IronMQ(['token' => env('IRON_TOKEN'), 'project' => env('IRON_PROJECT')])
-        );
+        $this->queue = $queue;
     }
 
     /**
@@ -23,6 +20,6 @@ class ClearQueues
      */
     public function handle()
     {
-        $this->queue->clear('generator');
+        $this->queue->clear();
     }
 }

@@ -3,10 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Kuroi\Cluster\Servers\Server;
-use Kuroi\Cluster\Servers\Adapters\DigitalOcean;
-use Kuroi\Cluster\Queues\Queue;
-use Kuroi\Cluster\Queues\Adapters\IronMQ;
+use App\Services\Workers;
+use App\Services\GeneratorQueue;
 
 class MonitorWorkers extends Command
 {
@@ -24,24 +22,20 @@ class MonitorWorkers extends Command
      */
     protected $description = 'Monitor workers and jobs and align numbers when needed.';
 
-    protected $server;
-
     protected $queue;
+
+    protected $workers;
 
     /**
      * Create a new command instance.
      */
-    public function __construct()
+    public function __construct(Workers $workers, GeneratorQueue $queue)
     {
         parent::__construct();
 
-        $this->server = new Server(
-            new DigitalOcean(['token' => env('DIGITALOCEAN_PERSONAL_ACCESS_TOKEN')])
-        );
+        $this->queue = $queue;
 
-        $this->queue = new Queue(
-            new IronMQ(['token' => env('IRON_TOKEN'), 'project' => env('IRON_PROJECT')])
-        );
+        $this->workers = $workers;
     }
 
     /**
@@ -51,9 +45,9 @@ class MonitorWorkers extends Command
      */
     public function handle()
     {
-        $jobs = $this->queue->count('generator')->size;
+        $jobs = $this->queue->count();
 
-        $workers = $this->server->read()->meta->total - 1;
+        $workers = $this->workers->count();
 
         $this->adjustWorkers($workers, $jobs);
     }
@@ -62,43 +56,13 @@ class MonitorWorkers extends Command
     {
         if ($workers > 0 && $jobs == 0) {
 
-            $this->deleteWorkers();
+            $this->workers->deleteAll();
 
         } elseif ($workers == 0 && $jobs > 0 ||
                   $workers == 1 && $jobs > 25 ||
                   $workers == 2 && $jobs > 200) {
 
-            $this->addWorker();
+            $this->workers->add();
         }
-    }
-
-    private function workerImage()
-    {
-        foreach ($this->server->images(['private' => 'true'])->images as $image) {
-            if ($image->name == 'worker') {
-                return $image->id;
-            }
-        }
-    }
-
-    private function deleteWorkers()
-    {
-        foreach ($this->server->read()->droplets as $droplet) {
-            if ('worker' == $droplet->name) {
-                $this->server->delete($droplet->id);
-            }
-        }
-    }
-
-    private function addWorker()
-    {
-        $this->server->create(
-            [
-                "name" => 'worker',
-                "region" => "lon1",
-                "size" => "1gb",
-                "image" => $this->workerImage(),
-            ]
-        );
     }
 }

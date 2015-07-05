@@ -4,38 +4,28 @@ namespace App\Http\Controllers;
 
 use Request;
 use App\Repositories\Documents;
-use Kuroi\Cluster\Servers\Server;
-use Kuroi\Cluster\Servers\Adapters\DigitalOcean;
-use Kuroi\Cluster\Queues\Queue;
-use Kuroi\Cluster\Queues\Adapters\IronMQ;
+use App\Services\Workers;
+use App\Services\GeneratorQueue;
 use App\Events\Teardown;
 
 class ApiController extends Controller
 {
-    protected $server;
-
     protected $queue;
 
     protected $documents;
 
-    public function __construct(Documents $documents)
+    public function __construct(Documents $documents, Workers $workers, GeneratorQueue $queue)
     {
-        $this->server = new Server(
-            new DigitalOcean(['token' => env('DIGITALOCEAN_PERSONAL_ACCESS_TOKEN')])
-        );
-
-        $this->queue = new Queue(
-            new IronMQ(['token' => env('IRON_TOKEN'), 'project' => env('IRON_PROJECT')])
-        );
-
         $this->documents = $documents;
+        $this->workers = $workers;
+        $this->queue = $queue;
     }
 
     public function clusterStats()
     {
-        $workers = $this->server->read()->meta->total - 1;
+        $workers = $this->workers->count();
 
-        $jobs = $this->queue->count('generator')->size;
+        $jobs = $this->queue->count();
 
         return json_encode(['managers' => 1, 'workers' => $workers, 'jobs' => $jobs]);
     }
