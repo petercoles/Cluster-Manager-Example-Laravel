@@ -6,6 +6,8 @@ use App\Models\Document;
 
 class Documents
 {
+    protected $document;
+
     public function __construct(Document $document)
     {
         $this->document = $document;
