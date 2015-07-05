@@ -60,13 +60,13 @@ class MonitorWorkers extends Command
 
     private function adjustWorkers($workers, $jobs)
     {
-        if ($workers > 0 and $jobs == 0) {
+        if ($workers > 0 && $jobs == 0) {
 
             $this->deleteWorkers();
 
-        } elseif ($workers == 0 and $jobs > 0 or
-                  $workers == 1 and $jobs > 25 or
-                  $workers == 2 and $jobs > 200) {
+        } elseif ($workers == 0 && $jobs > 0 ||
+                  $workers == 1 && $jobs > 25 ||
+                  $workers == 2 && $jobs > 200) {
 
             $this->addWorker();
         }
