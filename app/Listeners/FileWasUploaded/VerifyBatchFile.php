@@ -9,10 +9,9 @@ class VerifyBatchFile
     /**
      * Handle the event.
      *
-     * @param  FileWasUploaded  $event
      * @return void
      */
-    public function handle($event)
+    public function handle()
     {
         // @todo short-term add some basic verification processing
         // @todo long-term integrate Dave's verify component
