@@ -8,6 +8,8 @@ use App\Repositories\Batches;
 
 class ArchiveBatchData
 {
+    protected $batches;
+
     public function __construct(Batches $batches)
     {
         $this->batches = $batches;
@@ -17,7 +19,6 @@ class ArchiveBatchData
      * Handle the event.
      *
      * @param  FileWasUploaded  $event
-     * @return void
      */
     public function handle($event)
     {
