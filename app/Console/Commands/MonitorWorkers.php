@@ -53,7 +53,7 @@ class MonitorWorkers extends Command
     {
         $jobs = $this->queue->count('generator')->size;
 
-        $workers = $total = $this->server->read()->meta->total - 1;
+        $workers = $this->server->read()->meta->total - 1;
 
         $this->adjustWorkers($workers, $jobs);
     }
