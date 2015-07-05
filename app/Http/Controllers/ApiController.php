@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Request;
 use App\Repositories\Documents;
 use App\Services\Workers;
 use App\Services\GeneratorQueue;
