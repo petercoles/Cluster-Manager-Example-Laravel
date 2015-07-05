@@ -13,6 +13,8 @@ class ProcessBatchData
 {
     use DispatchesJobs;
 
+    protected $documents;
+
     public function __construct(Documents $documents)
     {
         $this->documents = $documents;
