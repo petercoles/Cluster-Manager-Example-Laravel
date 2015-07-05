@@ -10,7 +10,7 @@ class PowerDownServers
 
     public function __construct(Workers $workers)
     {
-        $this->workers = $worker;
+        $this->workers = $workers;
     }
 
     /**
