@@ -17,15 +17,19 @@ class Workers
     }
 
     /**
-     * Count the number of workers. At the moment it's assumed that there's
-     * one managers and everything else is a worker. Clearly not agood approach
-     * @todo improve by checking server name
+     * Count the number of currently-active workers.
      *
      * @return integer
      */
     public function count()
     {
-        return $this->server->read()->meta->total - 1;
+        $count = 0;
+        foreach ($this->server->read() as $server) {
+            if ('worker' == $server->name) {
+                $count++;
+            }
+        }
+        return $count;
     }
 
     public function add()
@@ -52,7 +56,7 @@ class Workers
     private function image()
     {
         foreach ($this->server->images(['private' => 'true'])->images as $image) {
-            if ($image->name == 'worker') {
+            if ('worker' == $image->name) {
                 return $image->id;
             }
         }
