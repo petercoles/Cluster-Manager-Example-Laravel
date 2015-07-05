@@ -14,8 +14,6 @@ get('count', 'ServerController@count');
 // api routes
 get('api/cluster-stats', 'ApiController@clusterStats');
 get('api/documents', 'ApiController@documentList');
-get('api/documents/{id}', 'ApiController@document');
-post('api/documents', 'ApiController@createDocument');
 get('api/teardown', 'ApiController@teardown');
 
 //process routes

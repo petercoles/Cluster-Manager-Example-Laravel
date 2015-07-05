@@ -36,16 +36,6 @@ class ApiController extends Controller
         return $this->documents->latest();
     }
 
-    public function document($id)
-    {
-        return $this->documents->find($id);
-    }
-
-    public function createDocument()
-    {
-        $this->documents->create(Request::all());
-    }
-
     public function teardown()
     {
         event(new Teardown);
