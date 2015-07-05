@@ -24,7 +24,7 @@ class Workers
     public function count()
     {
         $count = 0;
-        foreach ($this->server->read() as $server) {
+        foreach ($this->server->read()->droplets as $server) {
             if ('worker' == $server->name) {
                 $count++;
             }
@@ -46,9 +46,9 @@ class Workers
 
     public function deleteAll()
     {
-        foreach ($this->server->read()->droplets as $droplet) {
-            if ('worker' == $droplet->name) {
-                $this->server->delete($droplet->id);
+        foreach ($this->server->read()->droplets as $server) {
+            if ('worker' == $server->name) {
+                $this->server->delete($server->id);
             }
         }
     }
