@@ -7,6 +7,9 @@ use App\Repositories\Documents;
 
 class EmptyDatabase
 {
+    protected $batches;
+    protected $documents;
+
     public function __construct(Batches $batches, Documents $documents)
     {
         $this->batches = $batches;
