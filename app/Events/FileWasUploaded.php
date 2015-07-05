@@ -11,8 +11,7 @@ class FileWasUploaded extends Event
     /**
      * Create a new event instance.
      *
-     * @param  String  $fileName
-     * @return void
+     * @param  String  $file
      */
     public function __construct($file)
     {
