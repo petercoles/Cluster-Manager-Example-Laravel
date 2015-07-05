@@ -2,12 +2,13 @@
 
 namespace App\Repositories;
 
-use Log;
 use Carbon\Carbon;
 use App\Models\Batch;
 
 class Batches
 {
+    protected $batch;
+
     public function __construct(Batch $batch)
     {
         $this->batch = $batch;
