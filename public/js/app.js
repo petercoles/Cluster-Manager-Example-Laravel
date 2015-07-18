@@ -52,6 +52,9 @@ v = new Vue({
 });
 
 setInterval(function(){
-    v.getClusterStatus();
     v.getDocuments();
 },1000);
+
+setInterval(function(){
+    v.getClusterStatus();
+},10000);
